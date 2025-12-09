@@ -3,6 +3,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [ "src/app/components/*" ],
+      "@pages/*": [ "src/app/pages/*" ],
+      "@pipes/*": [ "src/app/pipes/*" ],
+      "@services/*": [ "src/app/services/*" ],
+      "@environments/*": [ "src/environments/*" ],
+    },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -21,7 +29,7 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "files": [],
+  "files": [ ],
   "references": [
     {
       "path": "./tsconfig.app.json"
