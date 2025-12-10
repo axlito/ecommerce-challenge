@@ -1,31 +1,24 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { ProductsList } from '@services/products-list';
-import { Product } from 'src/app/types/product';
 import { shortDescriptionPipe } from "@pipes/short-description";
 import { CurrencyPipe } from '@angular/common';
+import { ProductsStore } from 'src/app/store/products-store';
 
 @Component({
   selector: 'app-landing-page',
   imports: [shortDescriptionPipe, CurrencyPipe],
+  providers: [ProductsStore],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LandingPage implements OnInit {
-  protected products_data = signal<Product[] | null>(null);
-  #products = inject(ProductsList);
+  store = inject(ProductsStore);
+  protected products_data = this.store.products;
 
   ngOnInit(): void {
-    this.getProductsData();
+    this.store.getProductsList();
   }
 
-  public getProductsData(): void {
-    this.#products.getProductsData()
-      .subscribe((result: Product[]) => {
-        this.products_data.set(result);
-        // console.log(result);
-      });
-  }
 
   public getRatingData(rating: number): number[] {
     let aux: number[] = [-1, -1, -1, -1, -1];
