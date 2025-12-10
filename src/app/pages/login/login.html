@@ -1,0 +1,23 @@
+<section class="flex flex-col gap-4 justify-center items-center w-full mt-10">
+
+    <!-- <a href="#" class="text-black text-4xl tracking-tighter border-l-8 border-l-black/50 px-2 ps-0.5 h-10 flex items-start leading-none"><b
+           class="font-extrabold tracking-tight text-black/50 mr-px">Br</b>and</a> -->
+
+    <form class="flex flex-col border border-neutral-300 rounded-lg py-5 px-7 gap-3 w-96 justify-end" [formGroup]="login_form" (ngSubmit)="loginUser()">
+        <h1 class="font-semibold text-xl text-neutral-700 mb-2">Sign in to view your cart</h1>
+        <div class="flex flex-col gap-1">
+            <label for="user" class="font-bold text-sm text-neutral-800">Enter username</label>
+            <input formControlName="username" type="text" id="user"
+                   class="w-full bg-white border border-gray-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="password" class="font-bold text-sm text-neutral-800">Enter password</label>
+            <input formControlName="password" type="password" id="password"
+                   class="w-full bg-white border border-gray-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+        </div>
+        <button type="submit"
+                class="mt-1 w-full font-semibold bg-blue-600 hover:bg-blue-700 cursor-pointer text-white rounded-full px-2 py-1.5 transition-colors duration-100">Continue</button>
+        <span class="w-full text-xs mt-2">By login in the website, you agree to the Brand's <a href="#" class="underline text-blue-800">Conditions of
+                Use</a>.</span>
+    </form>
+</section>

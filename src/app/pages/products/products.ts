@@ -1,22 +1,28 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { shortDescriptionPipe } from "@pipes/short-description";
 import { CurrencyPipe } from '@angular/common';
-import { ProductsStore } from 'src/app/store/products-store';
+import { AppStore } from 'src/app/store/app-store';
+import { ProductsService } from '@services/products-service';
 
 @Component({
-  selector: 'app-landing-page',
+  selector: 'app-products',
   imports: [shortDescriptionPipe, CurrencyPipe],
-  providers: [ProductsStore],
-  templateUrl: './landing-page.html',
-  styleUrl: './landing-page.css',
+  providers: [AppStore],
+  templateUrl: './products.html',
+  styleUrl: './products.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LandingPage implements OnInit {
-  store = inject(ProductsStore);
+export class Products implements OnInit {
+  readonly store = inject(AppStore);
   protected products_data = this.store.products;
+
+  service = inject(ProductsService);
 
   ngOnInit(): void {
     this.store.getProductsList();
+    this.service.getUsersData().subscribe((result) => {
+      console.log(result);
+    });
   }
 
 

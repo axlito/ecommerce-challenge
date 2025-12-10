@@ -1,0 +1,38 @@
+<nav class="navbar sticky top-0 z-10 w-full bg-black/80 backdrop-blur-lg py-2">
+    <div class="max-w-[94%] flex flex-row justify-between items-center mx-auto">
+
+        <a href="#" class="text-white text-4xl tracking-tighter border-l-8 border-l-white/50 px-2 ps-0.5 h-10 flex items-start leading-none"><b
+               class="font-extrabold tracking-tight text-white/50 mr-px">Br</b>and</a>
+
+        <form class="flex w-2/3 relative items-center">
+            <input class="w-full border border-white rounded px-3 py-1.5 pe-9 outline-0 bg-white placeholder-gray-500 text-neutral-800"
+                   formControlName="search" id="search" name="search" placeholder="Search for anything ..." type="text">
+            <button type="submit" class="w-8 h-8 justify-center items-center flex right-2 absolute cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                     stroke-linecap="round" stroke-linejoin="round" class="text-neutral-600">
+                    <path d="m21 21-4.34-4.34" />
+                    <circle cx="11" cy="11" r="8" />
+                </svg>
+            </button>
+        </form>
+        <div class="flex flex-row gap-3">
+            <a href="#"
+               class="h-9 w-9 flex justify-center items-center p-1 m-0 text-white rounded-lg hover:bg-white/10 transition-colors duration-100 relative">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="" viewBox="0 0 16 16">
+                    <path
+                          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                </svg>
+                <span
+                      class="text-xs bg-red-600 font-bold w-5 h-5 justify-center items-center flex leading-none rounded-full shadow-sm border-2 absolute top-0 right-0">{{
+                    store.cart().length }}</span>
+            </a>
+            <a href="#"
+               class="h-9 w-9 flex justify-center items-center p-1 m-0 text-white rounded-lg hover:bg-white/10 transition-colors duration-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="" viewBox="0 0 16 16">
+                    <path
+                          d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                </svg>
+            </a>
+        </div>
+    </div>
+</nav>

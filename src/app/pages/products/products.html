@@ -7,14 +7,14 @@
                     <img [src]="p.image" [alt]="p.title"
                          class="group-hover:rotate-1 group-hover:scale-90 transition-transform duration-200 ease-in-out">
                     <span
-                          class="flex absolute top-3 left-3 w-fit h-fit text-xs font-semibold capitalize bg-gray-300 text-gray-700 rounded-2xl px-2.5 py-0.5">{{
+                          class="flex absolute top-3 left-3 w-fit h-fit text-xs font-semibold capitalize bg-gray-300 text-neutral-700 rounded-2xl px-2.5 py-0.5">{{
                         p.category }}</span>
                 </div>
                 <div class="flex flex-col gap-2 px-4 py-2">
                     <h2 class="font-semibold text-lg line-clamp-1">{{ p.title }}</h2>
                     <div class="flex flex-row gap-0.5 items-center">
-                        <span class="font-bold text-xs mr-0.5 text-gray-500">{{ p.rating.rate }}</span>
-                        <span class="font-bold text-xs mr-1 text-gray-500">({{ p.rating.count }})</span>
+                        <span class="font-bold text-xs mr-0.5 text-neutral-500">{{ p.rating.rate }}</span>
+                        <span class="font-bold text-xs mr-1 text-neutral-500">({{ p.rating.count }})</span>
                         @for (s of getRatingData(p.rating.rate); track $index) {
                         @if (s === -1) {
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="text-yellow-500"
@@ -37,8 +37,8 @@
                         }
                         }
                     </div>
-                    <p class="text-lg font-bold tracking-tight text-gray-800">{{ p.price | currency: 'USD' }}</p>
-                    <p class="font-normal text-base text-gray-800 line-clamp-4">{{ p.description | shortDescription:256 }}</p>
+                    <p class="text-lg font-bold tracking-tight text-neutral-800">{{ p.price | currency: 'USD' }}</p>
+                    <p class="font-normal text-base text-neutral-800 line-clamp-4">{{ p.description | shortDescription:256 }}</p>
                 </div>
             </a>
         </li>
