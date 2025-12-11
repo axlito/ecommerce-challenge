@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Auth } from '@interfaces/auth';
-import { User } from '@interfaces/user';
 import { Observable } from 'rxjs';
 
 @Injectable({
