@@ -1,0 +1,35 @@
+<header class="flex mt-6">
+    <ul class="flex flex-row gap-1 items-center text-sm text-neutral-800 font-bold">
+        <li><a [routerLink]="''" class="text-blue-600/80">Home</a></li>
+        <li>&gt;</li>
+        <li><a>User account</a></li>
+    </ul>
+</header>
+<section class="flex w-full mt-4 justify-start flex-col gap-4">
+    <div class="border-b border-b-neutral-400 pb-3 pe-12 flex flex-col">
+        <h1 class="w-fit font-bold text-2xl capitalize">Welcome, {{ user_data()?.name?.firstname }} {{ user_data()?.name?.lastname }}</h1>
+        <span class="w-fit text-xs mt-2">You can change your personal information at any time</span>
+    </div>
+    <form class="w-80 flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+            <label for="username" class="font-bold text-sm text-neutral-800">Username</label>
+            <input formControlName="username" type="text" id="username" [value]="user_data()?.username" class="w-full bg-white border border-gray-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="password" class="font-bold text-sm text-neutral-800">Password</label>
+            <input formControlName="password" type="password" id="password" [value]="user_data()?.password" class="w-full bg-white border border-gray-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="email" class="font-bold text-sm text-neutral-800">Email</label>
+            <input formControlName="email" type="email" id="email" [value]="user_data()?.email" class="w-full bg-white border border-gray-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="phone" class="font-bold text-sm text-neutral-800">Phone number</label>
+            <input formControlName="phone" type="text" id="phone" [value]="user_data()?.phone" class="w-full bg-white border border-gray-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+        </div>
+        <div class="flex flex-row gap-3">
+            <button class="bg-green-400 justify-center rounded py-1 px-3 font-semibold">Change my data</button>
+            <button class="bg-red-400 justify-center rounded py-1 px-3 font-semibold cursor-pointer" type="button" (click)="logoutUser()">Logout</button>
+        </div>
+    </form>
+</section>

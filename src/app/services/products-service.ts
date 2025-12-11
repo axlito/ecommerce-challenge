@@ -5,6 +5,7 @@ import { Cart } from '@interfaces/cart';
 import { Product } from '@interfaces/product';
 import { User } from '@interfaces/user';
 import { Observable } from 'rxjs';
+import { Category } from '@enums/category';
 
 @Injectable({
   providedIn: 'root',
@@ -13,16 +14,25 @@ export class ProductsService {
   private readonly API_URL = environment.API_URL;
   #httpClient = inject(HttpClient);
 
-  public getProductsData(): Observable<Product[]> {
-    return this.#httpClient.get<Product[]>(`${this.API_URL}/products`);
+  public getProductsData(limit = 20): Observable<Product[]> {
+    return this.#httpClient.get<Product[]>(`${this.API_URL}/products?limit=${limit}`);
   }
+
+  public getProductById(id: number): Observable<Product> {
+    return this.#httpClient.get<Product>(`${this.API_URL}/products/${id}`);
+  }
+
+  public getProductCategories(): Observable<Category[]> {
+    return this.#httpClient.get<Category[]>(`${this.API_URL}/products/categories`);
+  }
+
+  public getProductByCategory(category: Category): Observable<Product[]> {
+    return this.#httpClient.get<Product[]>(`${this.API_URL}//products/category/${category}`);
+  }
+
 
   public getCartsData(): Observable<Cart[]> {
     return this.#httpClient.get<Cart[]>(`${this.API_URL}/carts`);
-  }
-
-  public getUsersData(): Observable<User[]> {
-    return this.#httpClient.get<User[]>(`${this.API_URL}/users?limit=50`);
   }
 
 }

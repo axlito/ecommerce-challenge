@@ -3,6 +3,7 @@ import { shortDescriptionPipe } from "@pipes/short-description";
 import { CurrencyPipe } from '@angular/common';
 import { AppStore } from 'src/app/store/app-store';
 import { ProductsService } from '@services/products-service';
+import { Category } from '@enums/category';
 
 @Component({
   selector: 'app-products',
@@ -13,18 +14,21 @@ import { ProductsService } from '@services/products-service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Products implements OnInit {
-  readonly store = inject(AppStore);
-  protected products_data = this.store.products;
+  readonly appStore = inject(AppStore);
+  protected products_data = this.appStore.products;
 
-  service = inject(ProductsService);
-
+  #prod = inject(ProductsService);
   ngOnInit(): void {
-    this.store.getProductsList();
-    this.service.getUsersData().subscribe((result) => {
-      console.log(result);
-    });
-  }
+    this.appStore.getProductsList();
 
+    this.#prod.getProductByCategory(Category.jewelery).subscribe(
+      res => {
+        console.log(res);
+      }
+    );
+
+
+  }
 
   public getRatingData(rating: number): number[] {
     let aux: number[] = [-1, -1, -1, -1, -1];
