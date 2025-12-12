@@ -4,35 +4,37 @@ import { environment } from '@environments/environment';
 import { Cart } from '@interfaces/cart';
 import { Product } from '@interfaces/product';
 import { User } from '@interfaces/user';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Category } from '@enums/category';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class ProductsService {
-  private readonly API_URL = environment.API_URL;
-  #httpClient = inject(HttpClient);
+    private readonly API_URL = environment.API_URL;
+    #httpClient = inject(HttpClient);
 
-  public getProductsData(limit = 20): Observable<Product[]> {
-    return this.#httpClient.get<Product[]>(`${this.API_URL}/products?limit=${limit}`);
-  }
+    public getProductsList(limit = 20): Observable<Product[]> {
+        return this.#httpClient.get<Product[]>(`${this.API_URL}/products?limit=${limit}`);
+    }
 
-  public getProductById(id: number): Observable<Product> {
-    return this.#httpClient.get<Product>(`${this.API_URL}/products/${id}`);
-  }
+    public getProductById(id: number): Observable<Product> {
+        return this.#httpClient.get<Product>(`${this.API_URL}/products/${id}`);
+    }
 
-  public getProductCategories(): Observable<Category[]> {
-    return this.#httpClient.get<Category[]>(`${this.API_URL}/products/categories`);
-  }
+    public getProductCategories(): Observable<Category[]> {
+        return this.#httpClient.get<Category[]>(`${this.API_URL}/products/categories`);
+    }
 
-  public getProductByCategory(category: Category): Observable<Product[]> {
-    return this.#httpClient.get<Product[]>(`${this.API_URL}//products/category/${category}`);
-  }
+    public getProductByCategory(category: Category): Observable<Product[]> {
+        return this.#httpClient.get<Product[]>(`${this.API_URL}//products/category/${category}`);
+    }
 
 
-  public getCartsData(): Observable<Cart[]> {
-    return this.#httpClient.get<Cart[]>(`${this.API_URL}/carts`);
-  }
+    public getUserCart(user_id: number): Observable<Cart> {
+        return this.#httpClient.get<Cart[]>(`${this.API_URL}/carts/user/${user_id}`).pipe(
+            map((carts: Cart[]) => { return carts[0]; })
+        );
+    }
 
 }

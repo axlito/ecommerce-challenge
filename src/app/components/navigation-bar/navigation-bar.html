@@ -13,18 +13,18 @@
             </button>
         </form>
         <div class="flex flex-row gap-3">
-            <a href="#" class="h-9 w-9 flex justify-center items-center p-1 m-0 text-white rounded-lg hover:bg-white/10 transition-colors duration-100 relative">
+            <a [routerLink]="'cart'" class="h-9 w-9 flex justify-center items-center p-1 m-0 text-white rounded-lg hover:bg-white/10 transition-colors duration-100 relative">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="" viewBox="0 0 16 16">
                     <path
                           d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                 </svg>
-                @if (appStore.cart().length > 0) {
+                @if (cart_size() > 0) {
                 <span class="text-xs bg-red-600 font-bold w-5 h-5 justify-center items-center flex leading-none rounded-full shadow-sm border-2 absolute top-0 right-0">
-                    {{ appStore.cart().length }}
+                    {{ cart_size() }}
                 </span>
                 }
             </a>
-            @if (authStore.isUserAuthenticated()) {
+            @if (is_user_auth()) {
             <a [routerLink]="'user'" class="h-9 w-9 flex justify-center items-center p-1 m-0 text-white rounded-lg hover:bg-white/10 transition-colors duration-100">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />

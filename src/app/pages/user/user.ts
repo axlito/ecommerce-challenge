@@ -1,20 +1,21 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthStore } from 'src/app/store/auth-store';
+import { AppStore } from '@store/app-store';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.html',
   styleUrl: './user.css',
   imports: [RouterLink],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class User {
   #router = inject(Router);
-  readonly authStore = inject(AuthStore);
-  readonly user_data = this.authStore.user;
+  #appStore = inject(AppStore);
+  readonly auth_user = this.#appStore.auth_user;
 
   public logoutUser(): void {
-    this.authStore.deauthenticateUser();
+    this.#appStore.deauthenticateUser();
     this.#router.navigate(['']);
   }
 
