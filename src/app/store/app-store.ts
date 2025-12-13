@@ -39,13 +39,18 @@ export const AppStore = signalStore(
         getProductsCount: computed(() => {
             return state.product_list().entries.length;
         }),
+        getTotalPricing: computed(() => {
+            let total = 0;
+            state.user_cart().forEach((value, key) => {
+                total += (state.product_list().get(key)?.price! * value);
+            });
+            return total;
+        }),
         getCartSize: computed(() => {
             let cart_size = 0;
-            const cart = state.user_cart();
-            cart.forEach((value) => {
+            state.user_cart().forEach((value) => {
                 cart_size += value;
             });
-            console.log(cart_size);
             return cart_size;
 
         }),
@@ -110,18 +115,16 @@ export const AppStore = signalStore(
             let quantity = 1;
             if (store.user_cart().has(product_id)) {
                 quantity = store.user_cart().get(product_id)! + 1;
-                // console.log(quantity);
             }
             const new_cart = store.user_cart();
             new_cart.set(product_id, quantity);
             patchState(store, { user_cart: new Map(new_cart) });
-            console.log(store.user_cart().entries());
+            // console.log(store.user_cart().entries());
         },
         removeProductFromCart(product_id: number): void {
             let quantity = 0;
             if (store.user_cart().has(product_id)) {
                 quantity = store.user_cart().get(product_id)! - 1;
-                // console.log(quantity);
             }
             const new_cart = store.user_cart();
             if (quantity <= 0) {
@@ -130,7 +133,7 @@ export const AppStore = signalStore(
                 new_cart.set(product_id, quantity);
             }
             patchState(store, { user_cart: new Map(new_cart) });
-            console.log(store.user_cart().entries());
+            // console.log(store.user_cart().entries());
         },
         // Auth
         authenticateUser(token: string, user: UserInterface): void {

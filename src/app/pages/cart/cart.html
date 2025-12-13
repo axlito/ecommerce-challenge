@@ -1,4 +1,4 @@
-<section class="flex flex-col w-full max-w-3xl mt-4 justify-start mx-auto gap-4">
+<section class="flex flex-col w-full max-w-5xl mt-4 justify-start mx-auto gap-4">
     <breadcrumb [routes]="routes"></breadcrumb>
     @if (appStore.userIsAuthenticated()) {
         <h1 class="text-2xl font-semibold text-neutral-600">Your cart</h1>
@@ -9,6 +9,20 @@
                 <cart-item [products]="{ product: appStore.product_list().get(item[0]),  quantity: item[1]}"></cart-item>
             }
         </ul>
+
+        <div class="flex flex-row my-10 justify-between">
+            <div class="flex items-center">
+                <h1 class="text-2xl text-neutral-800">Total: <b class="text-neutral-600">{{ appStore.getTotalPricing() | currency: "USD" }}</b></h1>
+            </div>
+            <div class="flex flex-row items-center gap-3">
+                <a [routerLink]="''" class="flex w-fit font-semibold bg-neutral-500/80 hover:bg-neutral-500 cursor-pointer text-white rounded-full px-4 py-1.5 transition-colors duration-100">
+                    Add more items
+                </a>
+                <a [routerLink]="'checkout'" class="flex w-fit font-semibold bg-blue-600/80 hover:bg-blue-700 cursor-pointer text-white rounded-full px-4 py-1.5 transition-colors duration-100">
+                    Continue with payment
+                </a>
+            </div>
+        </div>
 
     } @else {
         <h1 class="text-2xl font-semibold text-neutral-600">Looks like your cart is empty</h1>
