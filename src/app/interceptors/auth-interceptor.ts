@@ -1,6 +1,5 @@
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { environment } from '@environments/environment';
 import { AppStore } from '@store/app-store';
 import { Observable } from 'rxjs';
 
