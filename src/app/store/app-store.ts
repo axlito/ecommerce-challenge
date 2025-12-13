@@ -6,7 +6,7 @@ import { UserInterface } from '@interfaces/user';
 import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ProductsService } from '@services/products-service';
-import { pipe, switchMap, tap } from 'rxjs';
+import { Observable, pipe, switchMap, tap } from 'rxjs';
 
 type AppState = {
     product_list: Map<number, ProductInterface>;
@@ -41,10 +41,13 @@ export const AppStore = signalStore(
         }),
         getCartSize: computed(() => {
             let cart_size = 0;
-            state.user_cart().forEach((value) => {
+            const cart = state.user_cart();
+            cart.forEach((value) => {
                 cart_size += value;
             });
+            console.log(cart_size);
             return cart_size;
+
         }),
     })),
     withMethods((store, productsService = inject(ProductsService)) => ({
@@ -61,27 +64,31 @@ export const AppStore = signalStore(
                 );
             }),
         )),
-        getRelatedProducts: rxMethod<void>(pipe(
-            tap(() => patchState(store, { is_loading: true })),
-            switchMap(() => {
-                return productsService.getProductByCategory(store.selected_product()!.category as Category).pipe(
+        getSelectedProduct: rxMethod<number>(pipe(
+            tap(() => patchState(store, { selected_product: null })),
+            switchMap((id: number) => {
+                return productsService.getProductById(id).pipe(
                     tap({
-                        next: (data: ProductInterface[]) => {
-                            let aux = data.filter(p => p.id !== store.selected_product()?.id).slice(0, 3);
-                            patchState(store, { related_product_list: new Map(aux.map(p => [p.id, p])) });
+                        next: (data: ProductInterface) => {
+                            patchState(store, { selected_product: data });
                         },
                         error: (message => console.error(message)),
-                        finalize: (() => patchState(store, { is_loading: false }))
-                    })
+                    }),
+                    switchMap(() => {
+                        return productsService.getProductByCategory(store.selected_product()!.category as Category).pipe(
+                            tap({
+                                next: (data: ProductInterface[]) => {
+                                    let aux = data.filter(p => p.id !== store.selected_product()?.id).slice(0, 3);
+                                    patchState(store, { related_product_list: new Map(aux.map(p => [p.id, p])) });
+                                },
+                                error: (message => console.error(message))
+                            })
+                        );
+                    }),
+
                 );
             }),
         )),
-        setSelectedProduct(id: number): void {
-            patchState(store, { selected_product: store.product_list().get(id) });
-            if (store.selected_product()) {
-                this.getRelatedProducts();
-            }
-        },
         // Cart
         getUserCart: rxMethod<void>(pipe(
             tap(() => patchState(store, { is_loading: true })),
@@ -107,7 +114,7 @@ export const AppStore = signalStore(
             }
             const new_cart = store.user_cart();
             new_cart.set(product_id, quantity);
-            patchState(store, { user_cart: new_cart });
+            patchState(store, { user_cart: new Map(new_cart) });
             console.log(store.user_cart().entries());
         },
         removeProductFromCart(product_id: number): void {
@@ -122,7 +129,7 @@ export const AppStore = signalStore(
             } else {
                 new_cart.set(product_id, quantity);
             }
-            patchState(store, { user_cart: new_cart });
+            patchState(store, { user_cart: new Map(new_cart) });
             console.log(store.user_cart().entries());
         },
         // Auth

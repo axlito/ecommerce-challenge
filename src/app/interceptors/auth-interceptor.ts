@@ -7,7 +7,7 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
     if (req.url.includes('/cart')) {
         let token: any = inject(AppStore).user_token();
         req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
-        console.log(token);
+        // console.log(token);
     }
     return next(req);
 };

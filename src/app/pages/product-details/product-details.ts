@@ -1,33 +1,29 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { Breadcrumb } from "@components/breadcrumb/breadcrumb";
+import { ProductCard } from "@components/product-card/product-card";
 import { RatingStars } from "@components/rating-stars/rating-stars";
 import { BreadcrumbInterface } from '@interfaces/breadcrumb';
 import { AppStore } from '@store/app-store';
-import { ProductCard } from "@components/product-card/product-card";
+import { RouterLink } from "@angular/router";
 
 @Component({
     selector: 'app-product-details',
-    imports: [Breadcrumb, RatingStars, CurrencyPipe, ProductCard],
+    imports: [Breadcrumb, RatingStars, CurrencyPipe, ProductCard, RouterLink],
     templateUrl: './product-details.html',
     styleUrl: './product-details.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductDetails implements OnInit {
+export class ProductDetails {
     appStore = inject(AppStore);
-    #activatedRoute = inject(ActivatedRoute);
+    readonly id = input.required<number>();
     routes: BreadcrumbInterface[] = [
         { route: "", name: "Home" },
         { route: "/products", name: "Product Details", current: true },
     ];
 
-    ngOnInit(): void {
-        this.#activatedRoute.params.subscribe((params) => {
-            const id = Number(params['id']);
-            this.routes[1].route = `/products/${id}`;
-            this.appStore.setSelectedProduct(id);
-        });
+    constructor() {
+        this.appStore.getSelectedProduct(this.id);
     }
 
     public addProductToCart(id: number): void {
