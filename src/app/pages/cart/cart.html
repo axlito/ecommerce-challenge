@@ -1,0 +1,18 @@
+<breadcrumb [routes]="routes"></breadcrumb>
+<section class="flex flex-col w-full max-w-3xl mt-4 justify-start mx-auto gap-4">
+    @if (is_user_auth()) {
+        <h1 class="text-2xl font-semibold text-neutral-600">Your cart</h1>
+        <p class="w-full text-base mt-2 font-semibold text-neutral-700">Add more items now. <a [routerLink]="''" class="underline text-blue-800">Products List</a></p>
+
+        <ul class="flex flex-col gap-3 w-full justify-between">
+            @for (item of user_cart().products; track $index) {
+                <cart-item [products]="{ product: product_list().get(item.productId),  quantity: item.quantity}"></cart-item>
+            }
+        </ul>
+
+    } @else {
+        <h1 class="text-2xl font-semibold text-neutral-600">Looks like your cart is empty</h1>
+        <p class="w-full text-base mt-2 font-semibold text-neutral-700">Let's add some items now. <a [routerLink]="''" class="underline text-blue-800">Products List</a></p>
+        <a [routerLink]="'/login'" class="flex mt-6 w-fit font-semibold bg-blue-600/80 hover:bg-blue-700 cursor-pointer text-white rounded-full px-4 py-1.5 transition-colors duration-100">Sign in to your account</a>
+    }
+</section>

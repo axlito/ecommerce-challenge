@@ -1,0 +1,13 @@
+<section class="flex w-full mt-10 justify-center">
+    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 w-full justify-between">
+        @if (is_loading()) {
+            @for (i of [].constructor(20); track $index) {
+                <skeleton-loading></skeleton-loading>
+            }
+        } @else {
+            @for (product of product_list().values(); track product.id) {
+                <product-card [product]="product"></product-card>
+            }
+        }
+    </ul>
+</section>

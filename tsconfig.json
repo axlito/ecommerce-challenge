@@ -5,10 +5,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@store/*": [ "src/app/store/*" ],
       "@components/*": [ "src/app/components/*" ],
       "@pages/*": [ "src/app/pages/*" ],
       "@pipes/*": [ "src/app/pipes/*" ],
       "@services/*": [ "src/app/services/*" ],
+      "@interfaces/*": [ "src/app/types/interfaces/*" ],
+      "@enums/*": [ "src/app/types/enums/*" ],
       "@environments/*": [ "src/environments/*" ],
     },
     "strict": true,
