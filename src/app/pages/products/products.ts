@@ -1,36 +1,17 @@
-import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { shortDescriptionPipe } from "@pipes/short-description";
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ProductCard } from "@components/product-card/product-card";
 import { AppStore } from '@store/app-store';
+import { SkeletonLoading } from "@components/skeleton-loading/skeleton-loading";
 
 @Component({
     selector: 'app-products',
-    imports: [shortDescriptionPipe, CurrencyPipe],
+    imports: [ProductCard, SkeletonLoading],
     templateUrl: './products.html',
     styleUrl: './products.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Products implements OnInit {
+export class Products {
     #appStore = inject(AppStore);
     protected product_list = this.#appStore.product_list;
-
-    ngOnInit(): void {
-        this.#appStore.getAllProducts();
-    }
-
-    public getRatingData(rating: number): number[] {
-        let aux: number[] = [-1, -1, -1, -1, -1];
-        if (rating % 1 === 0) {
-            for (let i = 0; i < rating; i++) {
-                aux[i] = 1;
-            }
-        } else {
-            for (let i = 0; i < Math.floor(rating); i++) {
-                aux[i] = 1;
-            }
-            aux[Math.floor(rating)] = 0;
-        }
-        return aux;
-    }
-
+    protected is_loading = this.#appStore.is_loading;
 }
