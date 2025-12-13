@@ -1,3 +1,5 @@
-export interface Cart {
-    products: [{ productId: number; quantity: number; }] | [];
+export interface CartInterface {
+    products: [
+        { productId: number; quantity: number; }
+    ];
 }

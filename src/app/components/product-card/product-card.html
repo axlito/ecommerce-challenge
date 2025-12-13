@@ -1,19 +1,17 @@
-<li class="border rounded-sm hover:border-neutral-300 hover:shadow-sm transition-colors duration-200 border-neutral-200 group h-full">
-    <a href="#">
-        <div class="flex w-full h-72 justify-center items-center p-4 bg-neutral-100 relative">
-            <img [src]="product().image" [alt]="product().title" class="group-hover:rotate-1 group-hover:scale-90 transition-transform duration-200 ease-in-out w-36 object-cover">
-            <span class="flex absolute top-3 left-3 w-fit h-fit text-xs font-semibold capitalize bg-neutral-300 text-neutral-700 rounded-2xl px-2.5 py-0.5">{{
+<li class="border rounded-md overflow-hidden hover:border-neutral-300 hover:shadow-sm transition-colors duration-200 border-neutral-200 group h-full">
+    <div class="flex w-full h-72 justify-center items-center p-4 bg-neutral-100 relative">
+        <img [src]="product().image" [alt]="product().title" class="group-hover:rotate-1 group-hover:scale-90 transition-transform duration-200 ease-in-out w-36 object-cover">
+        <span class="flex absolute top-3 left-3 w-fit h-fit text-xs font-semibold capitalize bg-neutral-300 text-neutral-700 rounded-2xl px-2.5 py-0.5">{{
                 product().category }}</span>
+    </div>
+    <div class="flex flex-col gap-2 px-4 py-2">
+        <h2 class="font-semibold text-lg line-clamp-1"><a class="hover:text-blue-700" [routerLink]="['/products/', product().id]">{{ product().title }}</a></h2>
+        <div class="flex flex-row gap-0.5 items-center">
+            <span class="font-bold text-xs mr-0.5 text-neutral-500">{{ product().rating.rate }}</span>
+            <span class="font-bold text-xs mr-1 text-neutral-500">({{ product().rating.count }})</span>
+            <rating-stars [rating]="product().rating.rate"></rating-stars>
         </div>
-        <div class="flex flex-col gap-2 px-4 py-2">
-            <h2 class="font-semibold text-lg line-clamp-1">{{ product().title }}</h2>
-            <div class="flex flex-row gap-0.5 items-center">
-                <span class="font-bold text-xs mr-0.5 text-neutral-500">{{ product().rating.rate }}</span>
-                <span class="font-bold text-xs mr-1 text-neutral-500">({{ product().rating.count }})</span>
-                <rating-stars [rating]="product().rating.rate"></rating-stars>
-            </div>
-            <p class="text-lg font-bold tracking-tight text-neutral-800">{{ product().price | currency: 'USD' }}</p>
-            <p class="font-normal text-base text-neutral-800 line-clamp-4">{{ product().description | shortDescription:256 }}</p>
-        </div>
-    </a>
+        <p class="text-lg font-bold tracking-tight text-neutral-800">{{ product().price | currency: 'USD' }}</p>
+        <p class="font-normal text-base text-neutral-800 line-clamp-4">{{ product().description | shortDescription:256 }}</p>
+    </div>
 </li>

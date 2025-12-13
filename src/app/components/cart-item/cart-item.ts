@@ -1,8 +1,9 @@
-import { Component, input } from '@angular/core';
-import { Product } from '@interfaces/product';
+import { Component, inject, input } from '@angular/core';
+import { ProductInterface } from '@interfaces/product';
 import { RatingStars } from "@components/rating-stars/rating-stars";
 import { CurrencyPipe } from '@angular/common';
 import { ShortDescriptionPipe } from '@pipes/short-description';
+import { AppStore } from '@store/app-store';
 
 @Component({
     selector: 'cart-item',
@@ -11,5 +12,15 @@ import { ShortDescriptionPipe } from '@pipes/short-description';
     styleUrl: './cart-item.css',
 })
 export class CartItem {
-    readonly products = input.required<{ product: Product | undefined, quantity: number; }>();
+    appStore = inject(AppStore);
+    readonly products = input.required<{ product: ProductInterface | undefined, quantity: number; }>();
+
+    public addProductToCart(id: number): void {
+        this.appStore.addProductToCart(id);
+    }
+
+    public removeProductFromCart(id: number): void {
+        this.appStore.removeProductFromCart(id);
+    }
+
 }

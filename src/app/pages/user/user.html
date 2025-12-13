@@ -7,25 +7,25 @@
 </header>
 <section class="flex w-full mt-4 justify-start flex-col gap-4">
     <div class="border-b border-b-neutral-400 pb-3 pe-12 flex flex-col">
-        <h1 class="w-fit font-bold text-2xl capitalize">Welcome, {{ auth_user()?.name?.firstname }} {{ auth_user()?.name?.lastname }}</h1>
+        <h1 class="w-fit font-bold text-2xl capitalize">Welcome, {{ appStore.auth_user()?.name?.firstname }} {{ appStore.auth_user()?.name?.lastname }}</h1>
         <span class="w-fit text-xs mt-2">You can change your personal information at any time</span>
     </div>
     <form class="w-80 flex flex-col gap-4">
         <div class="flex flex-col gap-1">
             <label for="username" class="font-bold text-sm text-neutral-800">Username</label>
-            <input formControlName="username" type="text" id="username" [value]="auth_user()?.username" class="w-full bg-white border border-neutral-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+            <input formControlName="username" type="text" id="username" [value]="appStore.auth_user()?.username" class="w-full bg-white border border-neutral-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
         </div>
         <div class="flex flex-col gap-1">
             <label for="password" class="font-bold text-sm text-neutral-800">Password</label>
-            <input formControlName="password" type="password" id="password" [value]="auth_user()?.password" class="w-full bg-white border border-neutral-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+            <input formControlName="password" type="password" id="password" [value]="appStore.auth_user()?.password" class="w-full bg-white border border-neutral-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
         </div>
         <div class="flex flex-col gap-1">
             <label for="email" class="font-bold text-sm text-neutral-800">Email</label>
-            <input formControlName="email" type="email" id="email" [value]="auth_user()?.email" class="w-full bg-white border border-neutral-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+            <input formControlName="email" type="email" id="email" [value]="appStore.auth_user()?.email" class="w-full bg-white border border-neutral-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
         </div>
         <div class="flex flex-col gap-1">
             <label for="phone" class="font-bold text-sm text-neutral-800">Phone number</label>
-            <input formControlName="phone" type="text" id="phone" [value]="auth_user()?.phone" class="w-full bg-white border border-neutral-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+            <input formControlName="phone" type="text" id="phone" [value]="appStore.auth_user()?.phone" class="w-full bg-white border border-neutral-400 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
         </div>
         <div class="flex flex-row gap-3">
             <button class="bg-green-400 justify-center rounded py-1 px-3 font-semibold">Change my data</button>

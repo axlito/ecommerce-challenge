@@ -1,12 +1,12 @@
-<breadcrumb [routes]="routes"></breadcrumb>
 <section class="flex flex-col w-full max-w-3xl mt-4 justify-start mx-auto gap-4">
-    @if (is_user_auth()) {
+    <breadcrumb [routes]="routes"></breadcrumb>
+    @if (appStore.userIsAuthenticated()) {
         <h1 class="text-2xl font-semibold text-neutral-600">Your cart</h1>
         <p class="w-full text-base mt-2 font-semibold text-neutral-700">Add more items now. <a [routerLink]="''" class="underline text-blue-800">Products List</a></p>
 
         <ul class="flex flex-col gap-3 w-full justify-between">
-            @for (item of user_cart().products; track $index) {
-                <cart-item [products]="{ product: product_list().get(item.productId),  quantity: item.quantity}"></cart-item>
+            @for (item of appStore.user_cart().entries(); track $index) {
+                <cart-item [products]="{ product: appStore.product_list().get(item[0]),  quantity: item[1]}"></cart-item>
             }
         </ul>
 

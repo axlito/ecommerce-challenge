@@ -11,7 +11,5 @@ import { SkeletonLoading } from "@components/skeleton-loading/skeleton-loading";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Products {
-    #appStore = inject(AppStore);
-    protected product_list = this.#appStore.product_list;
-    protected is_loading = this.#appStore.is_loading;
+    appStore = inject(AppStore);
 }

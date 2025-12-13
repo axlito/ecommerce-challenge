@@ -7,13 +7,13 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { platformInterceptor } from './interceptors/platform-interceptor';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
-    provideClientHydration(withEventReplay()),
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([platformInterceptor])
-    )
-  ]
+    providers: [
+        provideBrowserGlobalErrorListeners(),
+        provideRouter(routes),
+        provideClientHydration(withEventReplay()),
+        provideHttpClient(
+            withFetch(),
+            withInterceptors([platformInterceptor])
+        )
+    ]
 };

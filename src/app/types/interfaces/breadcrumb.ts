@@ -1,4 +1,4 @@
-export interface Breadcrumbs {
+export interface BreadcrumbInterface {
     route: string;
     name: string;
     current?: boolean;
