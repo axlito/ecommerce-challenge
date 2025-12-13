@@ -1,11 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Category } from '@enums/category';
 import { environment } from '@environments/environment';
 import { CartInterface } from '@interfaces/cart';
 import { ProductInterface } from '@interfaces/product';
-import { UserInterface } from '@interfaces/user';
 import { map, Observable } from 'rxjs';
-import { Category } from '@enums/category';
 
 @Injectable({
     providedIn: 'root',
@@ -15,7 +14,13 @@ export class ProductsService {
     #httpClient = inject(HttpClient);
 
     public getProductsList(limit = 20): Observable<ProductInterface[]> {
-        return this.#httpClient.get<ProductInterface[]>(`${this.API_URL}/products?limit=${limit}`);
+        const params = { params: new HttpParams().set('limit', limit) };
+        return this.#httpClient.get<ProductInterface[]>(`${this.API_URL}/products`, params);
+    }
+
+    public getProductsByQuery(query: string): Observable<ProductInterface[]> {
+        const params = { params: new HttpParams().set('search', query) };
+        return this.#httpClient.get<ProductInterface[]>(`${this.API_URL}/products`, params);
     }
 
     public getProductById(id: number): Observable<ProductInterface> {

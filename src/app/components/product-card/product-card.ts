@@ -1,9 +1,10 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RatingStars } from "@components/rating-stars/rating-stars";
 import { ProductInterface } from '@interfaces/product';
 import { ShortDescriptionPipe } from '@pipes/short-description';
 import { RouterLink } from "@angular/router";
+import { AppStore } from '@store/app-store';
 
 @Component({
     selector: 'product-card',
@@ -13,5 +14,11 @@ import { RouterLink } from "@angular/router";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductCard {
+    appStore = inject(AppStore);
     readonly product = input.required<ProductInterface>();
+
+    public addProductToCart(id: number): void {
+        this.appStore.addProductToCart(id);
+    }
+
 }

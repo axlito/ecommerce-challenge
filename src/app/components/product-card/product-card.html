@@ -1,11 +1,20 @@
-<li class="border rounded-md overflow-hidden hover:border-neutral-300 hover:shadow-sm transition-colors duration-200 border-neutral-200 group h-full">
+<li class="border rounded-md overflow-hidden hover:shadow-sm transition-colors duration-200 border-neutral-200 group h-full">
     <div class="flex w-full h-72 justify-center items-center p-4 bg-neutral-100 relative">
         <img [src]="product().image" [alt]="product().title" class="group-hover:rotate-1 group-hover:scale-90 transition-transform duration-200 ease-in-out w-36 object-cover">
         <span class="flex absolute top-3 left-3 w-fit h-fit text-xs font-semibold capitalize bg-neutral-300 text-neutral-700 rounded-2xl px-2.5 py-0.5">{{
                 product().category }}</span>
+        @if (appStore.userIsAuthenticated()) {
+            <button (click)="addProductToCart(product().id)"
+                    class="absolute bottom-2 right-2 translate-x-30 group-hover:translate-0 hover:cursor-pointer bg-green-600/80 hover:bg-green-600 active:ring-3 ring-green-300 transition-all ps-1 pe-3 py-1 rounded-full text-white flex flex-row text-xs items-center font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+                Add to cart
+            </button>
+        }
     </div>
     <div class="flex flex-col gap-2 px-4 py-2">
-        <h2 class="font-semibold text-lg line-clamp-1"><a class="hover:text-blue-700" [routerLink]="['/products/', product().id]">{{ product().title }}</a></h2>
+        <h2 class="font-semibold text-lg line-clamp-1"><a class="hover:text-neutral-500" [routerLink]="['/products/', product().id]">{{ product().title }}</a></h2>
         <div class="flex flex-row gap-0.5 items-center">
             <span class="font-bold text-xs mr-0.5 text-neutral-500">{{ product().rating.rate }}</span>
             <span class="font-bold text-xs mr-1 text-neutral-500">({{ product().rating.count }})</span>
