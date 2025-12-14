@@ -1,4 +1,5 @@
 import { computed, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Category } from '@enums/category';
 import { CartInterface } from '@interfaces/cart';
 import { ProductInterface } from '@interfaces/product';
@@ -55,7 +56,7 @@ export const AppStore = signalStore(
 
         }),
     })),
-    withMethods((store, productsService = inject(ProductsService)) => ({
+    withMethods((store, productsService = inject(ProductsService), router = inject(Router)) => ({
         // Products
         getProductsList: rxMethod<void>(pipe(
             tap(() => patchState(store, { is_loading: true })),
@@ -63,7 +64,7 @@ export const AppStore = signalStore(
                 return productsService.getProductsList().pipe(
                     tap({
                         next: (data: ProductInterface[]) => patchState(store, { product_list: new Map(data.map(p => [p.id, p])) }),
-                        error: (message => console.error(message)),
+                        // error: (message => console.error(message)),
                         finalize: (() => patchState(store, { is_loading: false }))
                     })
                 );
@@ -77,16 +78,17 @@ export const AppStore = signalStore(
                         next: (data: ProductInterface) => {
                             patchState(store, { selected_product: data });
                         },
-                        error: (message => console.error(message)),
+                        // error: (message => console.error(message)),
                     }),
                     switchMap(() => {
-                        return productsService.getProductByCategory(store.selected_product()!.category as Category).pipe(
+                        return productsService.getProductByCategory(store.selected_product()?.category as Category).pipe(
                             tap({
                                 next: (data: ProductInterface[]) => {
+                                    if (data.length === 0) router.navigate(['/error']);
                                     let aux = data.filter(p => p.id !== store.selected_product()?.id).slice(0, 3);
                                     patchState(store, { related_product_list: new Map(aux.map(p => [p.id, p])) });
                                 },
-                                error: (message => console.error(message))
+                                // error: (message => console.error(message))
                             })
                         );
                     }),
@@ -146,7 +148,6 @@ export const AppStore = signalStore(
     })),
     withHooks({
         onInit(store) {
-            console.log("onInit store");
             if (store.getProductsCount() === 0) store.getProductsList();
         },
         onDestroy(store) {

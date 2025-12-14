@@ -4,8 +4,9 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { platformInterceptor } from './interceptors/platform-interceptor';
-import { authInterceptor } from './interceptors/auth-interceptor';
+import { platformInterceptor } from '@interceptors/platform-interceptor';
+import { authInterceptor } from '@interceptors/auth-interceptor';
+import { notificationInterceptor } from '@interceptors/notification-interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -14,7 +15,7 @@ export const appConfig: ApplicationConfig = {
         provideClientHydration(withEventReplay()),
         provideHttpClient(
             withFetch(),
-            withInterceptors([platformInterceptor, authInterceptor])
+            withInterceptors([platformInterceptor, authInterceptor, notificationInterceptor])
         )
     ]
 };
