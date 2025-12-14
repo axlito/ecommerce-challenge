@@ -25,6 +25,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/login/login').then((c) => c.Login),
     },
     {
+        path: 'error',
+        loadComponent: () => import('./pages/not-found/not-found').then((c) => c.NotFound),
+    },
+    {
         path: '**',
         redirectTo: '',
     },

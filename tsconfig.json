@@ -12,6 +12,7 @@
       "@services/*": [ "src/app/services/*" ],
       "@interfaces/*": [ "src/app/types/interfaces/*" ],
       "@enums/*": [ "src/app/types/enums/*" ],
+      "@interceptors/*": [ "src/app/interceptors/*" ],
       "@environments/*": [ "src/environments/*" ],
     },
     "strict": true,
