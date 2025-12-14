@@ -1,26 +1,26 @@
-<li class="border rounded-sm hover:border-neutral-300 hover:shadow-sm transition-colors duration-200 border-neutral-200 group h-auto flex flex-row">
-    <div class="flex w-1/4 h-auto aspect-square justify-center items-center p-4 bg-neutral-100">
-        <img [src]="products().product!.image" [alt]="products().product!.title" class="w-auto h-32 object-cover">
+<li class="border rounded-sm border-neutral-200 group h-32 md:h-40 w-full flex flex-row">
+    <div class="flex w-1/3 md:w-1/5 h-full aspect-square justify-center items-center bg-neutral-100">
+        <img [src]="products().product?.image" [alt]="products().product!.title" class="w-auto h-24 object-cover">
     </div>
-    <div class="flex flex-col w-3/4 h-auto gap-2 px-4 py-2">
+    <div class="flex flex-col w-2/3 md:w-4/5 h-full gap-2 px-4 py-2 relative">
         <h2 class="font-semibold text-lg line-clamp-1">{{ products().product!.title }}</h2>
         <div class="flex flex-row gap-0.5 items-center w-full">
             <span class="font-bold text-xs mr-0.5 text-neutral-500">{{ products().product!.rating.rate }}</span>
             <span class="font-bold text-xs mr-1 text-neutral-500">({{ products().product!.rating.count }})</span>
             <rating-stars [rating]="products().product!.rating.rate"></rating-stars>
-            <span class="flex ms-auto w-fit h-fit text-xs font-semibold capitalize bg-neutral-300 text-neutral-700 rounded-2xl px-2.5 py-0.5">{{
+            <span class="hidden md:flex ms-auto w-fit h-fit text-xs font-semibold capitalize bg-neutral-300 text-neutral-700 rounded-2xl px-2.5 py-0.5">{{
                 products().product!.category }}</span>
         </div>
-        <p class="text-2xl font-bold tracking-tight text-neutral-700">{{ products().product!.price | currency: 'USD' }}</p>
+        <p class="text-lg md:text-2xl font-bold tracking-tight text-neutral-700">{{ products().product!.price | currency: 'USD' }}</p>
 
-        <div class="flex flex-row border border-neutral-300 rounded w-fit justify-between mt-auto ms-auto text-neutral-800">
-            <button class="bg-neutral-200 w-7 h-7 border-2 rounded-s border-white flex justify-center items-center">
+        <div class="flex flex-row border border-neutral-200 rounded w-fit justify-between absolute bottom-2 right-2 text-neutral-800">
+            <button (click)="removeProductFromCart(products().product!.id)" class="hover:bg-neutral-300 cursor-pointer bg-neutral-200 w-7 h-7 border-2 rounded-s border-white flex justify-center items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="" viewBox="0 0 16 16">
                     <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
                 </svg>
             </button>
             <input type="text" disabled [value]="products().quantity" class="w-10 font-bold text-lg text-center">
-            <button class="bg-neutral-200 w-7 h-7 border-2 rounded-e border-white flex justify-center items-center">
+            <button (click)="addProductToCart(products().product!.id)" class="hover:bg-neutral-300 cursor-pointer bg-neutral-200 w-7 h-7 border-2 rounded-e border-white flex justify-center items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                 </svg>

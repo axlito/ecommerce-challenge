@@ -3,11 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { NavigationBar } from '@components/navigation-bar/navigation-bar';
 
 @Component({
-  selector: 'app-root',
-  imports: [RouterOutlet, NavigationBar],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+    selector: 'app-root',
+    imports: [RouterOutlet, NavigationBar],
+    templateUrl: './app.html',
+    styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('ecommerce-challenge');
+    protected readonly title = signal('ecommerce-challenge');
 }

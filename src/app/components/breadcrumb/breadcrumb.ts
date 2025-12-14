@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Breadcrumbs } from '@interfaces/breadcrumb';
+import { BreadcrumbInterface } from '@interfaces/breadcrumb';
 
 @Component({
     selector: 'breadcrumb',
@@ -10,5 +10,5 @@ import { Breadcrumbs } from '@interfaces/breadcrumb';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Breadcrumb {
-    readonly routes = input.required<Breadcrumbs[]>();
+    readonly routes = input.required<BreadcrumbInterface[]>();
 }

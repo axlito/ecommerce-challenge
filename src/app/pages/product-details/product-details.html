@@ -1,0 +1,52 @@
+<section class="flex flex-col w-full max-w-5xl mt-4 justify-start mx-auto gap-4">
+    <breadcrumb [routes]="routes"></breadcrumb>
+    @if (appStore.selected_product()) {
+        <div class="flex flex-col md:flex-row w-full h-auto overflow-hidden my-1">
+            <div class="flex w-full md:w-2/5 h-auto aspect-square justify-center items-center p-4 bg-neutral-100">
+                <img [src]="appStore.selected_product()!.image" [alt]="appStore.selected_product()!.title" class="w-auto h-80 object-cover">
+            </div>
+            <div class="flex flex-col w-full md:w-3/5 h-auto gap-2 px-4 py-2">
+                <h2 class="font-semibold text-lg line-clamp-1">{{ appStore.selected_product()!.title }}</h2>
+                <div class="flex flex-row gap-0.5 items-center w-full">
+                    <span class="font-bold text-xs mr-0.5 text-neutral-500">{{ appStore.selected_product()!.rating.rate }}</span>
+                    <span class="font-bold text-xs mr-1 text-neutral-500">({{ appStore.selected_product()!.rating.count }})</span>
+                    <rating-stars [rating]="appStore.selected_product()!.rating.rate"></rating-stars>
+                    <span class="flex ms-auto w-fit h-fit text-xs font-semibold capitalize bg-neutral-300 text-neutral-700 rounded-2xl px-2.5 py-0.5">
+                        {{ appStore.selected_product()!.category }}
+                    </span>
+                </div>
+                <p class="text-2xl font-bold tracking-tight text-neutral-800">{{ appStore.selected_product()!.price | currency: 'USD' }}</p>
+                <p class="font-normal text-base text-neutral-800">{{ appStore.selected_product()!.description }}</p>
+                @if (appStore.userIsAuthenticated()) {
+                    @if (appStore.user_cart().get(appStore.selected_product()!.id)! > 0) {
+                        <button (click)="addProductToCart(appStore.selected_product()?.id!)" class="cursor-pointer flex w-fit h-fit font-semibold capitalize bg-green-600/80 hover:bg-green-700 active:ring-4 ring-green-300 transition-all text-white rounded-2xl px-4 ps-2 py-1 mt-6 gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                            </svg>
+                            Add more
+                        </button>
+                        <p class="text-sm text-green-700/80 font-semibold">You already have <b>{{ appStore.user_cart().get(appStore.selected_product()!.id) }}</b> instances of this product in your cart.</p>
+                    } @else {
+                        <button (click)="addProductToCart(appStore.selected_product()?.id!)" class="cursor-pointer flex w-fit h-fit font-semibold capitalize bg-blue-600/80 hover:bg-blue-700 active:ring-4 ring-blue-300 transition-all text-white rounded-2xl px-4 py-1 mt-6 gap-2 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="" viewBox="0 0 16 16">
+                                <path
+                                      d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                            </svg>
+                            Add to cart
+                        </button>
+                    }
+                } @else {
+                    <a [routerLink]="'/login'" class="cursor-pointer flex w-fit h-fit font-semibold bg-blue-600/80 hover:bg-blue-700 text-white rounded-2xl px-4 py-1 mt-6">Sign in to add items</a>
+                }
+            </div>
+        </div>
+        <h2 class="mt-10 text-lg font-semibold">Other products in {{ appStore.selected_product()?.category }} category</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-28">
+            @for (related of appStore.related_product_list().values(); track $index) {
+                <product-card [product]="related"></product-card>
+            }
+        </div>
+
+    }
+
+</section>
