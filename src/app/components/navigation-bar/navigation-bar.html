@@ -1,7 +1,7 @@
 <nav class="navbar sticky top-0 z-10 w-full bg-white/80 backdrop-blur-lg border-b border-b-neutral-200">
     <div class="max-w-[94%] flex flex-row justify-between items-center mx-auto">
 
-        <a debugStore routerLink="" class="text-black/70 text-4xl tracking-tighter px-2 ps-0.5 h-10 flex items-start leading-none"><b class="font-extrabold tracking-tight text-black/30 mr-px">br</b>and</a>
+        <a debugStore routerLink="" class="text-black/70 text-2xl md:text-4xl tracking-tighter px-2 ps-0.5 h-10 flex items-center leading-none"><b class="font-extrabold tracking-tight text-black/30 mr-px">br</b>and</a>
 
         <form [formGroup]="search_form" class="flex w-2/3 relative items-center" (ngSubmit)="searchProduct()">
             <input class="w-full focus:bg-neutral-100 transition-colors duration-100 px-3 py-3 pe-9 outline-0 placeholder-neutral-400 text-neutral-800" formControlName="search" id="search" name="search" placeholder="Search for anything ..." type="text">

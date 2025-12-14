@@ -1,17 +1,17 @@
-<li class="border rounded-sm border-neutral-200 group h-40 w-full flex flex-row">
-    <div class="flex w-1/5 h-full aspect-square justify-center items-center bg-neutral-100">
+<li class="border rounded-sm border-neutral-200 group h-32 md:h-40 w-full flex flex-row">
+    <div class="flex w-1/3 md:w-1/5 h-full aspect-square justify-center items-center bg-neutral-100">
         <img [src]="products().product?.image" [alt]="products().product!.title" class="w-auto h-24 object-cover">
     </div>
-    <div class="flex flex-col w-4/5 h-full gap-2 px-4 py-2 relative">
+    <div class="flex flex-col w-2/3 md:w-4/5 h-full gap-2 px-4 py-2 relative">
         <h2 class="font-semibold text-lg line-clamp-1">{{ products().product!.title }}</h2>
         <div class="flex flex-row gap-0.5 items-center w-full">
             <span class="font-bold text-xs mr-0.5 text-neutral-500">{{ products().product!.rating.rate }}</span>
             <span class="font-bold text-xs mr-1 text-neutral-500">({{ products().product!.rating.count }})</span>
             <rating-stars [rating]="products().product!.rating.rate"></rating-stars>
-            <span class="flex ms-auto w-fit h-fit text-xs font-semibold capitalize bg-neutral-300 text-neutral-700 rounded-2xl px-2.5 py-0.5">{{
+            <span class="hidden md:flex ms-auto w-fit h-fit text-xs font-semibold capitalize bg-neutral-300 text-neutral-700 rounded-2xl px-2.5 py-0.5">{{
                 products().product!.category }}</span>
         </div>
-        <p class="text-2xl font-bold tracking-tight text-neutral-700">{{ products().product!.price | currency: 'USD' }}</p>
+        <p class="text-lg md:text-2xl font-bold tracking-tight text-neutral-700">{{ products().product!.price | currency: 'USD' }}</p>
 
         <div class="flex flex-row border border-neutral-200 rounded w-fit justify-between absolute bottom-2 right-2 text-neutral-800">
             <button (click)="removeProductFromCart(products().product!.id)" class="hover:bg-neutral-300 cursor-pointer bg-neutral-200 w-7 h-7 border-2 rounded-s border-white flex justify-center items-center">

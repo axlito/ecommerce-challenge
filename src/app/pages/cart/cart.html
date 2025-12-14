@@ -1,32 +1,34 @@
 <section class="flex flex-col w-full max-w-5xl mt-4 justify-start mx-auto gap-4">
     <breadcrumb [routes]="routes"></breadcrumb>
-    @if (appStore.userIsAuthenticated()) {
-        <h1 class="text-2xl font-semibold text-neutral-600">Your cart</h1>
-        <p class="w-full text-base mt-2 font-semibold text-neutral-700">Add more items now. <a [routerLink]="''" class="underline text-blue-800">Products List</a></p>
-
-        <ul class="flex flex-col gap-3 w-full justify-between">
+    @if (appStore.userIsAuthenticated() && appStore.getCartSize() > 0) {
+        <div class="flex flex-col">
+            <h1 class="text-2xl font-semibold text-neutral-600">Items in cart</h1>
+            <span class="w-fit text-xs mt-2">Add more items now. <a [routerLink]="''" class="underline text-blue-600/80">Products List</a>.</span>
+        </div>
+        <ul class="flex flex-col gap-3 w-full justify-between mb-24">
             @for (item of appStore.user_cart().entries(); track $index) {
                 <cart-item [products]="{ product: appStore.product_list().get(item[0]),  quantity: item[1]}"></cart-item>
             }
         </ul>
-
-        <div class="flex flex-row my-10 justify-between">
-            <div class="flex items-center">
-                <h1 class="text-2xl text-neutral-800">Total: <b class="text-neutral-600">{{ appStore.getTotalPricing() | currency: "USD" }}</b></h1>
+        <div class="flex px-4 py-2 items-center fixed bottom-0 left-0 w-full border-t border-t-neutral-200 bg-white/80 backdrop-blur-lg z-10">
+            <div class="w-full flex flex-row max-w-5xl justify-between mx-auto">
+                <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-neutral-600">{{ appStore.getTotalPricing() | currency: "USD" }}</h1>
             </div>
             <div class="flex flex-row items-center gap-3">
-                <a [routerLink]="''" class="flex w-fit font-semibold bg-neutral-500/80 hover:bg-neutral-500 cursor-pointer text-white rounded-full px-4 py-1.5 transition-colors duration-100">
+                <a [routerLink]="''" class="hidden md:flex w-fit font-semibold bg-neutral-400 hover:bg-neutral-500 cursor-pointer text-white rounded-full px-4 py-1.5 transition-colors duration-100">
                     Add more items
                 </a>
-                <a [routerLink]="'checkout'" class="flex w-fit font-semibold bg-blue-600/80 hover:bg-blue-700 cursor-pointer text-white rounded-full px-4 py-1.5 transition-colors duration-100">
+                <a [routerLink]="'checkout'" class="flex w-fit font-semibold bg-green-600/80 hover:bg-green-700 cursor-pointer text-white rounded-full px-4 py-1.5 transition-colors duration-100">
                     Continue with payment
                 </a>
             </div>
+            </div>
         </div>
-
     } @else {
-        <h1 class="text-2xl font-semibold text-neutral-600">Looks like your cart is empty</h1>
-        <p class="w-full text-base mt-2 font-semibold text-neutral-700">Let's add some items now. <a [routerLink]="''" class="underline text-blue-800">Products List</a></p>
-        <a [routerLink]="'/login'" class="flex mt-6 w-fit font-semibold bg-blue-600/80 hover:bg-blue-700 cursor-pointer text-white rounded-full px-4 py-1.5 transition-colors duration-100">Sign in to your account</a>
+        <div class="flex flex-col">
+            <h1 class="text-2xl font-semibold text-neutral-600">Your cart is empty</h1>
+            <span class="w-fit text-xs mt-2">Let's add some items now. <a [routerLink]="''" class="underline text-blue-600/80">Products List</a>.</span>
+        </div>
     }
 </section>

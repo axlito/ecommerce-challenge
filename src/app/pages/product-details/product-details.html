@@ -1,11 +1,11 @@
 <section class="flex flex-col w-full max-w-5xl mt-4 justify-start mx-auto gap-4">
     <breadcrumb [routes]="routes"></breadcrumb>
     @if (appStore.selected_product()) {
-        <div class="flex flex-row h-auto w-full overflow-hidden my-10">
-            <div class="flex w-2/5 h-auto aspect-square justify-center items-center p-4 bg-neutral-100">
+        <div class="flex flex-col md:flex-row w-full h-auto overflow-hidden my-1">
+            <div class="flex w-full md:w-2/5 h-auto aspect-square justify-center items-center p-4 bg-neutral-100">
                 <img [src]="appStore.selected_product()!.image" [alt]="appStore.selected_product()!.title" class="w-auto h-80 object-cover">
             </div>
-            <div class="flex flex-col w-3/5 h-auto gap-2 px-4 py-2">
+            <div class="flex flex-col w-full md:w-3/5 h-auto gap-2 px-4 py-2">
                 <h2 class="font-semibold text-lg line-clamp-1">{{ appStore.selected_product()!.title }}</h2>
                 <div class="flex flex-row gap-0.5 items-center w-full">
                     <span class="font-bold text-xs mr-0.5 text-neutral-500">{{ appStore.selected_product()!.rating.rate }}</span>
@@ -36,12 +36,12 @@
                         </button>
                     }
                 } @else {
-                    <a [routerLink]="'/login'" class="cursor-pointer flex w-fit h-fit font-semibold bg-blue-600/80 hover:bg-blue-700 text-white rounded-2xl px-4 py-1 mt-6">Sign in to view your cart and add items</a>
+                    <a [routerLink]="'/login'" class="cursor-pointer flex w-fit h-fit font-semibold bg-blue-600/80 hover:bg-blue-700 text-white rounded-2xl px-4 py-1 mt-6">Sign in to add items</a>
                 }
             </div>
         </div>
         <h2 class="mt-10 text-lg font-semibold">Other products in {{ appStore.selected_product()?.category }} category</h2>
-        <div class="grid grid-cols-3 gap-3 mb-28">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-28">
             @for (related of appStore.related_product_list().values(); track $index) {
                 <product-card [product]="related"></product-card>
             }
