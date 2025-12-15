@@ -1,52 +1,104 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Breadcrumb } from "@components/breadcrumb/breadcrumb";
 import { BreadcrumbInterface } from '@interfaces/breadcrumb';
 import { AppStore } from '@store/app-store';
 import { debounceTime, distinctUntilChanged, pipe } from 'rxjs';
+import { Field, form, max, maxLength, min, minLength, pattern, required, submit, validate } from '@angular/forms/signals';
+import { Router } from '@angular/router';
+import { NotificationsStore } from '@store/notification-store';
+
+interface CheckoutFormData {
+    card: string,
+    card_expire: string,
+    card_code: string,
+    full_name: string,
+    address: string,
+    zipcode: string,
+    city: string,
+}
 
 @Component({
     selector: 'app-checkout',
-    imports: [Breadcrumb, CurrencyPipe, ReactiveFormsModule],
+    imports: [Breadcrumb, CurrencyPipe, ReactiveFormsModule, Field],
     templateUrl: './checkout.html',
     styleUrl: './checkout.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Checkout implements OnInit {
+export class Checkout {
     appStore = inject(AppStore);
+    notificationStore = inject(NotificationsStore);
+    #router = inject(Router);
+    protected is_loading = signal<boolean>(false);
     readonly routes: BreadcrumbInterface[] = [
         { route: "", name: "Home" },
         { route: "/cart", name: "Your cart" },
         { route: "/cart/checkout", name: "Payment methods", current: true },
     ];
 
-    public payment_form = new FormGroup({
-        card: new FormControl<string>("1234123412341234", { nonNullable: true, validators: [Validators.required, Validators.maxLength(16), Validators.minLength(16), Validators.pattern('^[0-9]*$')] }),
-        card_month: new FormControl<number>(8, { nonNullable: true, validators: [Validators.required, Validators.maxLength(2)] }),
-        card_year: new FormControl<number>(2026, { nonNullable: true, validators: [Validators.required, Validators.maxLength(4), Validators.minLength(4)] }),
-        card_code: new FormControl<string>("", { nonNullable: true, validators: [Validators.required] }),
-        name: new FormControl<string>(this.appStore.auth_user()!.name.firstname, { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
-        lastname: new FormControl<string>(this.appStore.auth_user()!.name.lastname, { nonNullable: true, validators: [Validators.required] }),
-        facturation: new FormControl<string>(`${this.appStore.auth_user()!.address.street} ${this.appStore.auth_user()!.address.zipcode}`, { nonNullable: true, validators: [Validators.required] }),
-        address: new FormControl<string>(this.appStore.auth_user()!.address.number.toString(), { nonNullable: true, validators: [Validators.required] }),
-        city: new FormControl<string>(this.appStore.auth_user()!.address.city, { nonNullable: true, validators: [Validators.required] }),
+    checkout_model = signal<CheckoutFormData>({
+        card: '',
+        card_expire: '',
+        card_code: '',
+        full_name: `${this.appStore.auth_user()!.name.firstname} ${this.appStore.auth_user()!.name.lastname}`,
+        address: `${this.appStore.auth_user()!.address.street} No. ${this.appStore.auth_user()!.address.number}`,
+        zipcode: `No. ${this.appStore.auth_user()!.address.zipcode}`,
+        city: this.appStore.auth_user()!.address.city,
     });
 
-    ngOnInit(): void {
-        this.payment_form.valueChanges.pipe(
-            debounceTime(300),
-            distinctUntilChanged()
-        ).subscribe((form) => {
+    checkout_form = form(this.checkout_model, (path) => {
+        required(path.card, { message: 'Card number is required' });
+        pattern(path.card, /(?<!\d)\d{16}(?!\d)/, { message: 'Card number must be valid' });
 
+        required(path.card_expire, { message: 'Card expiry date is required' });
+        pattern(path.card_expire, /(?<!\d)\d{4}-\d{2}(?!\d)/, { message: 'Expiry date must be valid' });
+        validate(path.card_expire, ({ value }) => {
+            if (!value) return null;
+            const today = new Date();
+            const input_date = new Date(value());
+            if (input_date < today) {
+                return { kind: 'error', message: 'Expiry date must be valid' };
+            }
+            return null;
+        });
+
+        required(path.card_code, { message: 'Card code is required' });
+        pattern(path.card_code, /(?<!\d)\d{3}(?!\d)/, { message: 'Card code must be valid' });
+
+        required(path.full_name, { message: 'User information is required' });
+        pattern(path.full_name, /(\w+ \w+)/, { message: 'Enter name and lastname' });
+
+        required(path.zipcode, { message: 'Zipcode is required' });
+        required(path.address, { message: 'User address is required' });
+        required(path.city, { message: 'User address is required' });
+    });
+
+    public isFieldInvalid(name: keyof CheckoutFormData) {
+        const field = this.checkout_form[name];
+        if (!field) return;
+        return field() && field().touched() && field().errors().length > 0;
+    }
+
+    onSubmit(event: Event) {
+        event.preventDefault();
+
+        submit(this.checkout_form, async () => {
+            this.is_loading.set(true);
+            await new Promise((resolve) => setTimeout(resolve, 3000));
+            this.postCheckout();
         });
     }
 
-    public proceedPayment(): void {
-        if (this.payment_form.invalid) {
-            console.error(this.payment_form.errors);
-            return;
-        }
+    public postCheckout(): void {
+        this.is_loading.set(true);
+        console.log({
+            form: this.checkout_form().value(),
+            valid: this.checkout_form().valid(),
+        });
+        this.notificationStore.addNotificationData('message', ' Your payment has been confirmed, check your email for more details');
+        this.appStore.resetCart();
+        this.#router.navigate(['']);
     }
 
 }

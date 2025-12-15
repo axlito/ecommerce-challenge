@@ -1,4 +1,4 @@
-import { computed, inject } from '@angular/core';
+import { computed, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Category } from '@enums/category';
 import { CartInterface } from '@interfaces/cart';
@@ -6,8 +6,9 @@ import { ProductInterface } from '@interfaces/product';
 import { UserInterface } from '@interfaces/user';
 import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { AuthService } from '@services/auth-service';
 import { ProductsService } from '@services/products-service';
-import { Observable, pipe, switchMap, tap } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
 
 type AppState = {
     product_list: Map<number, ProductInterface>;
@@ -137,9 +138,14 @@ export const AppStore = signalStore(
             patchState(store, { user_cart: new Map(new_cart) });
             // console.log(store.user_cart().entries());
         },
+        resetCart(): void {
+            patchState(store, { user_cart: new Map() });
+        },
         // Auth
         authenticateUser(token: string, user: UserInterface): void {
             patchState(store, { user_token: token, auth_user: user });
+            sessionStorage.setItem('auth_user', JSON.stringify(user));
+            sessionStorage.setItem('auth_token', token);
             this.getUserCart();
         },
         deauthenticateUser(): void {
@@ -147,12 +153,26 @@ export const AppStore = signalStore(
         }
     })),
     withHooks({
-        onInit(store) {
-            if (store.getProductsCount() === 0) store.getProductsList();
+        onInit(store, authService = inject(AuthService)) {
+            effect(() => {
+                if (store.getProductsCount() === 0) {
+                    store.getProductsList();
+                }
+            });
+            // effect(() => {
+            //     if (sessionStorage.getItem('auth_user') && !store.userIsAuthenticated()) {
+            //         let user: UserInterface = JSON.parse(sessionStorage.getItem('auth_user')!);
+            //         const username = user!.username;
+            //         const password = user!.password;
+            //         authService.loginUser({ username, password }).subscribe(({ token }: TokenInterface) => {
+            //             if (token)
+            //                 store.authenticateUser(token, user);
+            //         });
+            //     }
+            // });
         },
         onDestroy(store) {
             // console.log('on destroy');
-            // console.log(store.is_loading());
         },
     }),
 

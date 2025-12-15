@@ -1,29 +1,31 @@
-<nav class="navbar sticky top-0 z-10 w-full bg-white/80 backdrop-blur-lg border-b border-b-neutral-200">
-    <div class="max-w-[94%] flex flex-row justify-between items-center mx-auto">
+@if (showHeader()) {
+    <nav class="navbar sticky top-0 z-10 w-full bg-white/80 backdrop-blur-lg border-b border-b-neutral-200">
+        <div class="max-w-[94%] flex flex-row justify-between items-center mx-auto">
 
-        <a debugStore routerLink="" class="text-black/70 text-2xl md:text-4xl tracking-tighter px-2 ps-0.5 h-10 flex items-center leading-none"><b class="font-extrabold tracking-tight text-black/30 mr-px">br</b>and</a>
+            <a debugStore routerLink="" class="text-black/70 text-2xl md:text-4xl tracking-tighter px-2 ps-0.5 h-10 flex items-center leading-none"><b class="font-extrabold tracking-tight text-black/30 mr-px">br</b>and</a>
 
-        <form [formGroup]="search_form" class="flex w-2/3 relative items-center" (ngSubmit)="searchProduct()">
-            <input class="w-full focus:bg-neutral-100 transition-colors duration-100 px-3 py-3 pe-9 outline-0 placeholder-neutral-400 text-neutral-800" formControlName="search" id="search" name="search" placeholder="Search for anything ..." type="text">
-            <button type="submit" class="w-8 h-8 justify-center items-center flex right-2 absolute cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400">
-                    <path d="m21 21-4.34-4.34" />
-                    <circle cx="11" cy="11" r="8" />
-                </svg>
-            </button>
-        </form>
-        <div class="flex flex-row gap-3">
-            <a [routerLink]="'cart'" class="h-9 w-9 flex justify-center items-center p-1 m-0 text-neutral-500 rounded-lg hover:bg-neutral-100 transition-colors duration-100 relative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="" viewBox="0 0 16 16">
-                    <path
-                          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-                </svg>
-                @if (appStore.getCartSize() > 0) {
-                    <span class="text-xs bg-red-600 text-white font-semibold w-4 h-4 justify-center items-center flex leading-none rounded-full shadow-md absolute -top-0.5 -right-0.5">
-                        {{ appStore.getCartSize() }}
-                    </span>
-                }
-            </a>
+            <form [formGroup]="search_form" class="flex w-2/3 relative items-center" (ngSubmit)="searchProduct()">
+                <input class="w-full focus:bg-neutral-100 transition-colors duration-100 px-3 py-3 pe-9 outline-0 placeholder-neutral-400 text-neutral-800" formControlName="search" id="search" name="search" placeholder="Search for anything ..." type="text">
+                <button type="submit" class="w-8 h-8 justify-center items-center flex right-2 absolute cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400">
+                        <path d="m21 21-4.34-4.34" />
+                        <circle cx="11" cy="11" r="8" />
+                    </svg>
+                </button>
+            </form>
+            <div class="flex flex-row gap-3">
+                <a [routerLink]="'cart'" class="h-9 w-9 flex justify-center items-center p-1 m-0 text-neutral-500 rounded-lg hover:bg-neutral-100 transition-colors duration-100 relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="" viewBox="0 0 16 16">
+                        <path
+                              d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                    </svg>
+                    @if (appStore.getCartSize() > 0) {
+                        <span class="text-xs bg-red-600 text-white font-semibold w-4 h-4 justify-center items-center flex leading-none rounded-full shadow-md absolute -top-0.5 -right-0.5">
+                            {{ appStore.getCartSize() }}
+                        </span>
+                    }
+                </a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+}

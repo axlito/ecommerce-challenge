@@ -1,10 +1,12 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthInterface } from '@interfaces/auth';
 import { TokenInterface } from '@interfaces/token';
 import { UserInterface } from '@interfaces/user';
 import { AuthService } from '@services/auth-service';
+import { NotificationsStore } from '@store/notification-store';
 import { switchMap } from 'rxjs';
 import { AppStore } from 'src/app/store/app-store';
 
@@ -18,6 +20,7 @@ import { AppStore } from 'src/app/store/app-store';
 })
 export class Login {
     appStore = inject(AppStore);
+    notificationStore = inject(NotificationsStore);
     #authService = inject(AuthService);
     #location = inject(Location);
 
@@ -40,6 +43,7 @@ export class Login {
                 if (user !== undefined) {
                     this.appStore.authenticateUser(user_token, user);
                     this.#location.back();
+                    this.notificationStore.addNotificationData('message', `Auth successful as ${user.name.firstname.toUpperCase()} ${user.name.lastname.toUpperCase()}`);
                 }
             });
     }

@@ -7,45 +7,78 @@
                 <span class="w-fit text-xs mt-2">You can change your personal information any time before proceed.</span>
             </div>
             <div class="flex flex-col md:flex-row gap-6 justify-between">
-                <form class="flex w-full md:w-1/2 lg:w-1/3 flex-col gap-4" [formGroup]="payment_form">
+                <form class="flex w-full md:w-1/2 lg:w-1/3 flex-col gap-4" (submit)="onSubmit($event)">
                     <div class="flex flex-col gap-1">
-                        <label for="card" class="font-bold text-sm text-neutral-800">Card number</label>
-                        <input formControlName="card" type="number" id="card" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+                        <label for="card" class="font-bold text-sm text-neutral-800">Card number<span class="text-red-600 ms-1">*</span></label>
+                        <input [field]="checkout_form.card" placeholder="0000111122223333" type="number" id="card" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100"
+                               [class]="isFieldInvalid('card') ? 'border-red-300 ring-red-300' : ''">
+                        @if (isFieldInvalid('card')) {
+                            @for (error of checkout_form.card().errors(); track $index) {
+                                <span class="text-xs font-semibold text-red-500">{{ error.message }}</span>
+                            }
+                        }
                     </div>
                     <div class="flex flex-row gap-4">
                         <div class="flex flex-col gap-1 w-2/4">
-                            <label for="card_month" class="font-bold text-sm text-neutral-800">Card expiry date</label>
-                            <div class="flex flex-row gap-2">
-                                <input formControlName="card_month" type="number" id="card_month" class="w-2/4 bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
-                                <input formControlName="card_year" type="number" id="card_year" class="w-2/4 bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
-                            </div>
+                            <label for="card_expire" class="font-bold text-sm text-neutral-800">Card expiry date<span class="text-red-600 ms-1">*</span></label>
+                            <input [field]="checkout_form.card_expire" placeholder="" type="month" id="card_expire" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100"
+                                   [class]="isFieldInvalid('card_expire') ? 'border-red-300 ring-red-300' : ''">
+                            @if (isFieldInvalid('card_expire')) {
+                                @for (error of checkout_form.card_expire().errors(); track $index) {
+                                    <span class="text-xs font-semibold text-red-500">{{ error.message }}</span>
+                                }
+                            }
                         </div>
                         <div class="flex flex-col gap-1 w-2/4">
-                            <label for="card_code" class="font-bold text-sm text-neutral-800">Card code</label>
-                            <input formControlName="card_code" type="number" id="card_code" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
-                        </div>
-                    </div>
-                    <div class="flex flex-row gap-2">
-                        <div class="flex flex-col gap-1 w-1/2">
-                            <label for="name" class="font-bold text-sm text-neutral-800">Name</label>
-                            <input formControlName="name" type="text" id="name" class="uppercase w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
-                        </div>
-                        <div class="flex flex-col gap-1 w-1/2">
-                            <label for="lastname" class="font-bold text-sm text-neutral-800">Last name</label>
-                            <input formControlName="lastname" type="text" id="lastname" class="uppercase w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+                            <label for="card_code" class="font-bold text-sm text-neutral-800">Card code<span class="text-red-600 ms-1">*</span></label>
+                            <input [field]="checkout_form.card_code" placeholder="000" type="number" id="card_code" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100"
+                                   [class]="isFieldInvalid('card_code') ? 'border-red-300 ring-red-300' : ''">
+                            @if (isFieldInvalid('card_code')) {
+                                @for (error of checkout_form.card_code().errors(); track $index) {
+                                    <span class="text-xs font-semibold text-red-500">{{ error.message }}</span>
+                                }
+                            }
                         </div>
                     </div>
                     <div class="flex flex-col gap-1">
-                        <label for="facturation" class="font-bold text-sm text-neutral-800">Facturation address</label>
-                        <input formControlName="facturation" type="text" id="facturation" class="capitalize w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+                        <label for="full_name" class="font-bold text-sm text-neutral-800">Name<span class="text-red-600 ms-1">*</span></label>
+                        <input [field]="checkout_form.full_name" placeholder="Name Lastname" type="text" id="full_name" class="capitalize w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100"
+                               [class]="isFieldInvalid('full_name') ? 'border-red-300 ring-red-300' : ''">
+                        @if (isFieldInvalid('full_name')) {
+                            @for (error of checkout_form.full_name().errors(); track $index) {
+                                <span class="text-xs font-semibold text-red-500">{{ error.message }}</span>
+                            }
+                        }
                     </div>
                     <div class="flex flex-col gap-1">
-                        <label for="address" class="font-bold text-sm text-neutral-800">Facturation address Line 2</label>
-                        <input formControlName="address" type="text" id="address" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+                        <label for="address" class="font-bold text-sm text-neutral-800">Facturation address<span class="text-red-600 ms-1">*</span></label>
+                        <input [field]="checkout_form.address" placeholder="Street No." type="text" id="address" class="capitalize w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100"
+                               [class]="isFieldInvalid('address') ? 'border-red-300 ring-red-300' : ''">
+                        @if (isFieldInvalid('address')) {
+                            @for (error of checkout_form.address().errors(); track $index) {
+                                <span class="text-xs font-semibold text-red-500">{{ error.message }}</span>
+                            }
+                        }
                     </div>
                     <div class="flex flex-col gap-1">
-                        <label for="city" class="font-bold text-sm text-neutral-800">City</label>
-                        <input formControlName="city" type="text" id="city" class="capitalize w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+                        <label for="zipcode" class="font-bold text-sm text-neutral-800">Zipcode<span class="text-red-600 ms-1">*</span></label>
+                        <input [field]="checkout_form.zipcode" placeholder="Zipcode" type="text" id="zipcode" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100"
+                               [class]="isFieldInvalid('zipcode') ? 'border-red-300 ring-red-300' : ''">
+                        @if (isFieldInvalid('zipcode')) {
+                            @for (error of checkout_form.zipcode().errors(); track $index) {
+                                <span class="text-xs font-semibold text-red-500">{{ error.message }}</span>
+                            }
+                        }
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label for="city" class="font-bold text-sm text-neutral-800">City<span class="text-red-600 ms-1">*</span></label>
+                        <input [field]="checkout_form.city" placeholder="City" type="text" id="city" class="capitalize w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100"
+                               [class]="isFieldInvalid('city') ? 'border-red-300 ring-red-300' : ''">
+                        @if (isFieldInvalid('city')) {
+                            @for (error of checkout_form.city().errors(); track $index) {
+                                <span class="text-xs font-semibold text-red-500">{{ error.message }}</span>
+                            }
+                        }
                     </div>
                 </form>
                 <div class="flex w-full md:w-1/2 lg:w-2/3 flex-col">
@@ -75,8 +108,12 @@
                     <h1 class="text-2xl font-bold text-neutral-600">{{ appStore.getTotalPricing() | currency: "USD" }}</h1>
                 </div>
                 <div class="flex flex-row items-center gap-3">
-                    <button (click)="proceedPayment()" class="flex w-fit font-semibold bg-green-600/80 hover:bg-green-700 cursor-pointer text-white rounded-full px-8 py-2 transition-colors duration-100">
+                    <button [disabled]="is_loading()" (click)="onSubmit($event)"
+                            class="flex items-center gap-3 w-fit font-semibold bg-green-600/80 hover:bg-green-700 cursor-pointer text-white rounded-full px-8 py-2 transition-colors duration-100 disabled:bg-green-600/80 disabled:hover:bg-green-600/80 disabled:hover:cursor-not-allowed">
                         Proceed
+                        @if (is_loading()) {
+                            <span class="flex w-5 h-5 border-4 border-white/50 border-l-white rounded-full animate-spin"></span>
+                        }
                     </button>
                 </div>
             </div>
