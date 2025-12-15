@@ -8,7 +8,7 @@ import { patchState, signalStore, withComputed, withHooks, withMethods, withStat
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { AuthService } from '@services/auth-service';
 import { ProductsService } from '@services/products-service';
-import { pipe, switchMap, tap } from 'rxjs';
+import { debounceTime, pipe, switchMap, tap } from 'rxjs';
 
 type AppState = {
     product_list: Map<number, ProductInterface>;
@@ -54,7 +54,6 @@ export const AppStore = signalStore(
                 cart_size += value;
             });
             return cart_size;
-
         }),
     })),
     withMethods((store, productsService = inject(ProductsService), router = inject(Router)) => ({
@@ -153,7 +152,34 @@ export const AppStore = signalStore(
         }
     })),
     withHooks({
-        onInit(store, authService = inject(AuthService)) {
+        onInit(store, authService = inject(AuthService), appService = inject(ProductsService)) {
+            const cartChangeEffect = rxMethod<void>(
+                pipe(
+                    debounceTime(2000),
+                    tap((state) => {
+                        if (store.userIsAuthenticated()) {
+                            console.log('Cart has changed! - executing automatic update');
+                            let newCart = {
+                                userId: store.auth_user()!.id,
+                                products: [
+                                    { productId: 0, quantity: 0 }
+                                ],
+                            };
+                            store.user_cart().forEach((value, key) => {
+                                newCart.products.push({ productId: key, quantity: value });
+                            });
+                            newCart.products = newCart.products.slice(1, newCart.products.length);
+                            appService.saveUserCart([newCart], store.auth_user()!.id).subscribe(
+                                ({ id }) => {
+                                    console.log(`Cart updated!`);
+                                }
+                            );
+                        }
+                    })
+                )
+            );
+            cartChangeEffect(store.user_cart);
+
             effect(() => {
                 if (store.getProductsCount() === 0) {
                     store.getProductsList();
