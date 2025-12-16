@@ -1,5 +1,5 @@
 @if (notificationStore.notification().message) {
-    <div class="flex flex-col w-80 h-auto px-4 py-2 rounded border fixed right-8 shadow shadow-black/10 top-20 gap-1 z-10" [class]="(notificationStore.notification().type === 'error') ? 'bg-red-100 border-red-200' : 'bg-green-100 border-green-200'">
+    <div class="flex flex-col w-80 h-auto px-4 py-2 rounded border fixed right-8 shadow shadow-black/10 top-16 gap-1 z-10" [class]="(notificationStore.notification().type === 'error') ? 'bg-red-100 border-red-200' : 'bg-green-100 border-green-200'">
         <p class="text-xs font-semibold" [class]="(notificationStore.notification().type === 'error') ? 'text-red-800' : 'text-green-800'">{{ notificationStore.notification().message }}</p>
     </div>
 }

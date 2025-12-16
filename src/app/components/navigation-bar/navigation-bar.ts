@@ -1,14 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { AppStore } from '@store/app-store';
-import { Event, NavigationEnd, Router, RouterLink } from "@angular/router";
-import { DebugStoreDirective } from "src/app/directives/debug-store";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators, ɵInternalFormsSharedModule } from '@angular/forms';
-import { ProductsService } from '@services/products-service';
+import { Field, form, required, submit } from '@angular/forms/signals';
+import { NavigationEnd, Router, RouterLink } from "@angular/router";
 import { ProductInterface } from '@interfaces/product';
+import { ProductsService } from '@services/products-service';
+import { AppStore } from '@store/app-store';
+import { DebugStoreDirective } from "src/app/directives/debug-store";
+
+interface SearchFormInterface {
+    search: string;
+}
 
 @Component({
     selector: 'navigation-bar',
-    imports: [RouterLink, DebugStoreDirective, ReactiveFormsModule],
+    imports: [RouterLink, DebugStoreDirective, Field],
     templateUrl: './navigation-bar.html',
     styleUrl: './navigation-bar.css',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -29,21 +33,24 @@ export class NavigationBar {
         });
     }
 
-    public search_form = new FormGroup({
-        search: new FormControl<string>('', [Validators.required]),
+    search_model = signal<SearchFormInterface>({
+        search: ''
     });
 
-    public searchProduct(): void {
-        if (this.search_form.invalid) {
-            this.search_form.reset();
-            return;
-        }
-        this.#appService.getProductsByQuery(this.search_form.controls.search.value as string).subscribe(
-            (data: ProductInterface[]) => {
-                console.log(data);
-                this.search_form.reset();
-            }
-        );
+    search_form = form(this.search_model, (path) => {
+        required(path.search);
+    });
+
+    onSubmit(event: Event) {
+        event.preventDefault();
+        submit(this.search_form, async () => {
+            this.#appService.getProductsByQuery(this.search_form().value().search).subscribe(
+                (data: ProductInterface[]) => {
+                    console.log(data);
+                    this.search_form().reset();
+                }
+            );
+        });
     }
 
 }

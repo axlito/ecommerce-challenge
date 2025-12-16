@@ -1,12 +1,10 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Field, form, pattern, required, submit, validate } from '@angular/forms/signals';
+import { Router } from '@angular/router';
 import { Breadcrumb } from "@components/breadcrumb/breadcrumb";
 import { BreadcrumbInterface } from '@interfaces/breadcrumb';
 import { AppStore } from '@store/app-store';
-import { debounceTime, distinctUntilChanged, pipe } from 'rxjs';
-import { Field, form, max, maxLength, min, minLength, pattern, required, submit, validate } from '@angular/forms/signals';
-import { Router } from '@angular/router';
 import { NotificationsStore } from '@store/notification-store';
 
 interface CheckoutFormData {
@@ -21,7 +19,7 @@ interface CheckoutFormData {
 
 @Component({
     selector: 'app-checkout',
-    imports: [Breadcrumb, CurrencyPipe, ReactiveFormsModule, Field],
+    imports: [Breadcrumb, CurrencyPipe, Field],
     templateUrl: './checkout.html',
     styleUrl: './checkout.css',
     changeDetection: ChangeDetectionStrategy.OnPush
