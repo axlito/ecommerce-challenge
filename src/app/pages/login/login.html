@@ -1,15 +1,30 @@
 <section class="flex flex-col gap-4 justify-center items-center w-full mt-10">
-    <form class="flex flex-col border border-neutral-200 rounded-lg py-5 px-7 gap-3 w-96 justify-end" [formGroup]="login_form" (ngSubmit)="loginUser()">
+    <form class="flex flex-col border border-neutral-200 rounded-lg py-5 px-7 gap-3 w-96 justify-end" (submit)="onSubmit($event)">
         <h1 class="font-semibold text-xl text-neutral-700 mb-2">Sign in to view your cart</h1>
         <div class="flex flex-col gap-1">
             <label for="user" class="font-bold text-sm text-neutral-800">Enter username</label>
-            <input formControlName="username" type="text" id="user" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+            <input [field]="login_form.username" type="text" id="user" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100" [class]="isFieldInvalid('username') ? 'border-red-300 ring-red-300' : ''">
+            @if (isFieldInvalid('username')) {
+                @for (error of login_form.username().errors(); track $index) {
+                    <span class="text-xs font-semibold text-red-500">{{ error.message }}</span>
+                }
+            }
         </div>
         <div class="flex flex-col gap-1">
             <label for="password" class="font-bold text-sm text-neutral-800">Enter password</label>
-            <input formControlName="password" type="password" id="password" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100">
+            <input [field]="login_form.password" type="password" id="password" class="w-full bg-white border border-neutral-200 rounded px-2 py-1 outline-0 ring-0 focus:ring-2 ring-blue-300 transition-all duration-100" [class]="isFieldInvalid('password') ? 'border-red-300 ring-red-300' : ''">
+            @if (isFieldInvalid('password')) {
+                @for (error of login_form.password().errors(); track $index) {
+                    <span class="text-xs font-semibold text-red-500">{{ error.message }}</span>
+                }
+            }
         </div>
-        <button type="submit" class="mt-1 w-full font-semibold bg-blue-600/80 hover:bg-blue-700 cursor-pointer text-white rounded-full px-2 py-1.5 transition-colors duration-100">Continue</button>
+        <button [disabled]="is_loading()" type="submit" class="mt-1 w-full font-semibold bg-blue-600/80 hover:bg-blue-700 cursor-pointer text-white rounded-full px-2 py-1.5 transition-colors duration-100 flex gap-3 items-center justify-center disabled:bg-blue-600/80 disabled:hover:bg-blue-600/80 disabled:hover:cursor-not-allowed">
+            Continue
+            @if (is_loading()) {
+                <span class="flex w-5 h-5 border-4 border-white/50 border-l-white rounded-full animate-spin"></span>
+            }
+        </button>
         <span class="w-full text-xs mt-2">By login in the website, you agree to the Brand's <a href="#" class="underline text-blue-800">Conditions of
                 Use</a>.</span>
     </form>

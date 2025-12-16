@@ -27,9 +27,9 @@ interface CheckoutFormData {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Checkout {
+    #router = inject(Router);
     appStore = inject(AppStore);
     notificationStore = inject(NotificationsStore);
-    #router = inject(Router);
     protected is_loading = signal<boolean>(false);
     readonly routes: BreadcrumbInterface[] = [
         { route: "", name: "Home" },

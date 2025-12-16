@@ -78,7 +78,6 @@ export const AppStore = signalStore(
                         next: (data: ProductInterface) => {
                             patchState(store, { selected_product: data });
                         },
-                        // error: (message => console.error(message)),
                     }),
                     switchMap(() => {
                         return productsService.getProductByCategory(store.selected_product()?.category as Category).pipe(
@@ -88,7 +87,6 @@ export const AppStore = signalStore(
                                     let aux = data.filter(p => p.id !== store.selected_product()?.id).slice(0, 3);
                                     patchState(store, { related_product_list: new Map(aux.map(p => [p.id, p])) });
                                 },
-                                // error: (message => console.error(message))
                             })
                         );
                     }),
@@ -98,7 +96,6 @@ export const AppStore = signalStore(
         )),
         // Cart
         getUserCart: rxMethod<void>(pipe(
-            tap(() => patchState(store, { is_loading: true })),
             switchMap(() => {
                 return productsService.getUserCart(store.auth_user()!.id).pipe(
                     tap({
@@ -107,8 +104,6 @@ export const AppStore = signalStore(
                                 patchState(store, { user_cart: new Map(data.products.map(p => [p.productId, p.quantity])) });
                             }
                         },
-                        error: (message => console.error(message)),
-                        finalize: (() => patchState(store, { is_loading: false }))
                     })
                 );
             }),
@@ -155,7 +150,7 @@ export const AppStore = signalStore(
         onInit(store, authService = inject(AuthService), appService = inject(ProductsService)) {
             const cartChangeEffect = rxMethod<void>(
                 pipe(
-                    debounceTime(2000),
+                    debounceTime(5000),
                     tap((state) => {
                         if (store.userIsAuthenticated()) {
                             console.log('Cart has changed! - executing automatic update');
@@ -190,7 +185,7 @@ export const AppStore = signalStore(
             //         let user: UserInterface = JSON.parse(sessionStorage.getItem('auth_user')!);
             //         const username = user!.username;
             //         const password = user!.password;
-            //         authService.loginUser({ username, password }).subscribe(({ token }: TokenInterface) => {
+            //         authService.loginUser({ username, password }).subscribe(({ token }: any) => {
             //             if (token)
             //                 store.authenticateUser(token, user);
             //         });
