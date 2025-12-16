@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { AppStore } from '@store/app-store';
-import { RouterLink } from "@angular/router";
+import { Event, NavigationEnd, Router, RouterLink } from "@angular/router";
 import { DebugStoreDirective } from "src/app/directives/debug-store";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, ɵInternalFormsSharedModule } from '@angular/forms';
 import { ProductsService } from '@services/products-service';
@@ -16,6 +16,18 @@ import { ProductInterface } from '@interfaces/product';
 export class NavigationBar {
     appStore = inject(AppStore);
     #appService = inject(ProductsService);
+    #router = inject(Router);
+    protected showHeader = signal<boolean>(true);
+
+    constructor() {
+        this.#router.events.subscribe((val) => {
+            if (val instanceof NavigationEnd && val.url === '/login') {
+                this.showHeader.set(false);
+            } else {
+                this.showHeader.set(true);
+            }
+        });
+    }
 
     public search_form = new FormGroup({
         search: new FormControl<string>('', [Validators.required]),

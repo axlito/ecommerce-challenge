@@ -32,14 +32,17 @@ export class ProductsService {
     }
 
     public getProductByCategory(category: Category): Observable<ProductInterface[]> {
-        return this.#httpClient.get<ProductInterface[]>(`${this.API_URL}//products/category/${category}`);
+        return this.#httpClient.get<ProductInterface[]>(`${this.API_URL}/products/category/${category}`);
     }
-
 
     public getUserCart(user_id: number): Observable<CartInterface> {
         return this.#httpClient.get<CartInterface[]>(`${this.API_URL}/carts/user/${user_id}`).pipe(
             map((carts: CartInterface[]) => { return carts[0]; })
         );
+    }
+
+    public saveUserCart(cart: any, id: number): Observable<any> {
+        return this.#httpClient.patch<CartInterface>(`${this.API_URL}/carts/${id}`, cart);
     }
 
 }
