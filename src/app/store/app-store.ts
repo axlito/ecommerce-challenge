@@ -8,7 +8,7 @@ import { patchState, signalStore, withComputed, withHooks, withMethods, withStat
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { AuthService } from '@services/auth-service';
 import { ProductsService } from '@services/products-service';
-import { debounceTime, pipe, switchMap, tap } from 'rxjs';
+import { debounceTime, of, pipe, switchMap, tap } from 'rxjs';
 
 type AppState = {
     product_list: Map<number, ProductInterface>;
@@ -144,6 +144,7 @@ export const AppStore = signalStore(
         },
         deauthenticateUser(): void {
             patchState(store, { user_token: "", auth_user: null, user_cart: new Map() });
+            sessionStorage.clear();
         }
     })),
     withHooks({
@@ -175,22 +176,29 @@ export const AppStore = signalStore(
             );
             cartChangeEffect(store.user_cart);
 
+            // const autoLogin = rxMethod<void>(pipe(
+            //     switchMap(() => {
+            //         if (!sessionStorage.getItem('auth_user') || store.userIsAuthenticated()) return of(undefined);
+            //         console.log('User data found - Auth');
+            //         const user: UserInterface = JSON.parse(sessionStorage.getItem('auth_user')!);
+            //         const username = user!.username;
+            //         const password = user!.password;
+            //         return authService.loginUser({ username, password }).pipe(
+            //             tap({
+            //                 next: ({ token }) => {
+            //                     if (token) store.authenticateUser(token, user);
+            //                 },
+            //             })
+            //         );
+            //     }),
+            // ));
+            // autoLogin();
+
             effect(() => {
                 if (store.getProductsCount() === 0) {
                     store.getProductsList();
                 }
             });
-            // effect(() => {
-            //     if (sessionStorage.getItem('auth_user') && !store.userIsAuthenticated()) {
-            //         let user: UserInterface = JSON.parse(sessionStorage.getItem('auth_user')!);
-            //         const username = user!.username;
-            //         const password = user!.password;
-            //         authService.loginUser({ username, password }).subscribe(({ token }: any) => {
-            //             if (token)
-            //                 store.authenticateUser(token, user);
-            //         });
-            //     }
-            // });
         },
         onDestroy(store) {
             // console.log('on destroy');

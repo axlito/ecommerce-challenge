@@ -1,6 +1,4 @@
-import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Field, form, required, submit } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { AuthInterface } from '@interfaces/auth';
@@ -8,7 +6,7 @@ import { TokenInterface } from '@interfaces/token';
 import { UserInterface } from '@interfaces/user';
 import { AuthService } from '@services/auth-service';
 import { NotificationsStore } from '@store/notification-store';
-import { debounceTime, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { AppStore } from 'src/app/store/app-store';
 
 interface LoginFormData {
@@ -18,7 +16,7 @@ interface LoginFormData {
 
 @Component({
     selector: 'app-login',
-    imports: [ReactiveFormsModule, Field],
+    imports: [Field],
     templateUrl: './login.html',
     styleUrl: './login.css',
     changeDetection: ChangeDetectionStrategy.OnPush
